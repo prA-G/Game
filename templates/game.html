@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Game — Play</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dark-body">
+  <div class="game-wrap">
+    <header class="game-header">
+      <h1 class="huge">Battle Mode</h1>
+      <p class="lead">Players: <strong>{{ p1 }}</strong> vs <strong>{{ p2 }}</strong></p>
+    </header>
+
+    <main class="arena">
+      <div class="player-card" id="p1-card">
+        <div class="player-name">{{ p1 }}</div>
+        <div class="choice-box" id="p1-choice">—</div>
+        <button class="btn play-btn" id="p1-btn">START</button>
+      </div>
+
+      <div class="player-card" id="p2-card">
+        <div class="player-name">{{ p2 }}</div>
+        <div class="choice-box" id="p2-choice">—</div>
+        <button class="btn play-btn" id="p2-btn">START</button>
+      </div>
+    </main>
+
+    <div class="controls">
+      <a class="btn ghost" href="/reset">Reset</a>
+      <a class="btn main-btn" id="go-to-result" href="#" style="display:none">See Result</a>
+    </div>
+  </div>
+
+<script src="{{ url_for('static', filename='game.js') }}"></script>
+<script>
+  // initialize client vars
+  const p1Btn = document.getElementById('p1-btn');
+  const p2Btn = document.getElementById('p2-btn');
+  const p1ChoiceBox = document.getElementById('p1-choice');
+  const p2ChoiceBox = document.getElementById('p2-choice');
+  const gotoResult = document.getElementById('go-to-result');
+
+  const setBusy = (btn, state) => {
+    if(state) { btn.classList.add('busy'); btn.textContent = '...'; }
+    else { btn.classList.remove('busy'); btn.textContent = 'START'; }
+  };
+
+  async function play(player) {
+    const btn = player === 'p1' ? p1Btn : p2Btn;
+    const box = player === 'p1' ? p1ChoiceBox : p2ChoiceBox;
+
+    // animation: quick spinner
+    setBusy(btn, true);
+    box.classList.remove('reveal');
+    box.textContent = '...';
+
+    // 800ms dramatic pause
+    await new Promise(r => setTimeout(r, 800));
+
+    const resp = await fetch(`/api/play/${player}`, { method: 'POST' });
+    const data = await resp.json();
+
+    box.textContent = data.choice;
+    box.classList.add('reveal');
+    setBusy(btn, false);
+
+    // if both choices present -> show result button
+    if (data.p1_choice && data.p2_choice) {
+      gotoResult.style.display = 'inline-block';
+      gotoResult.href = '/result';
+    }
+  }
+
+  p1Btn.addEventListener('click', () => play('p1'));
+  p2Btn.addEventListener('click', () => play('p2'));
+
+  // if choices already present (refresh), show them:
+  (function init() {
+    {% if p1_choice %}
+      p1ChoiceBox.textContent = "{{ p1_choice }}";
+      p1ChoiceBox.classList.add('reveal');
+    {% endif %}
+    {% if p2_choice %}
+      p2ChoiceBox.textContent = "{{ p2_choice }}";
+      p2ChoiceBox.classList.add('reveal');
+    {% endif %}
+    {% if p1_choice and p2_choice %}
+      gotoResult.style.display = 'inline-block';
+      gotoResult.href = '/result';
+    {% endif %}
+  })();
+
+</script>
+</body>
+</html>

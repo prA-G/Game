@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Welcome — Stone Paper Scissors</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<style>
+  /* small overrides for welcome page to keep it self-contained */
+  .welcome-hero { text-align:center; margin-top:6vh; color:#f6f7fb; }
+  .start-cta { margin-top:24px; }
+</style>
+</head>
+<body class="dark-body">
+  <div class="centered">
+    <div class="welcome-hero">
+      <h1 class="huge">Stone ✊ Paper ✋ Scissors ✌️</h1>
+      <p class="lead">No choices. Tap your START. The system picks. Winner is destiny 🔮</p>
+      <div class="start-cta">
+        <a href="/players" class="btn main-btn">Start Game</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- floating icons -->
+  <div class="float-emoji e1">✊</div>
+  <div class="float-emoji e2">✋</div>
+  <div class="float-emoji e3">✌️</div>
+  <div class="float-emoji e4">✊</div>
+  <div class="float-emoji e5">✋</div>
+
+</body>
+</html>

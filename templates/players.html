@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Enter Players</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dark-body">
+  <div class="card small-card">
+    <h2>Enter Player Names</h2>
+    <form method="POST" style="margin-top:12px;">
+      <label class="label">Player 1</label>
+      <input class="input" type="text" name="p1" placeholder="Player 1 name" required>
+
+      <label class="label">Player 2</label>
+      <input class="input" type="text" name="p2" placeholder="Player 2 name" required>
+
+      <div style="margin-top:16px;">
+        <button class="btn main-btn" type="submit">Continue</button>
+        <a class="btn ghost" href="/">Cancel</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
