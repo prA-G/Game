@@ -1,93 +1,38 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<title>Result — Battle</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="utf-8"/>
+  <title>Result</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="dark-body">
-  <div class="result-wrap">
-    <h1 class="huge">Battle Result</h1>
-    <div class="arena result-arena">
-      <div class="player-card result-left" id="res-p1">
-        <div class="player-name">{{ p1 }}</div>
-        <div class="choice-large" id="res-c1">{{ c1 }}</div>
-      </div>
+  <canvas id="confetti-canvas"></canvas>
 
-      <div class="vs-stamp">VS</div>
+  <div class="center-box">
+    <h1 class="huge">Result</h1>
+    <p class="lead">{{ p1 }} chose <strong>{{ p1_choice }}</strong></p>
+    <p class="lead">{{ p2 }} chose <strong>{{ p2_choice }}</strong></p>
 
-      <div class="player-card result-right" id="res-p2">
-        <div class="player-name">{{ p2 }}</div>
-        <div class="choice-large" id="res-c2">{{ c2 }}</div>
-      </div>
+    <div class="verdict">
+      {% if winner == "Draw" %}
+        <h2>It’s a Draw 🤝</h2>
+      {% else %}
+        <h2>{{ winner }} Wins 🎉</h2>
+      {% endif %}
     </div>
 
-    <div id="result-banner" class="result-banner">Winner: <span id="winner-name">{{ winner }}</span></div>
-
     <div class="controls">
-      <a class="btn main-btn" href="/reset">Play Again</a>
-      <a class="btn ghost" href="/">Home</a>
+      <a class="btn main-btn" href="/game">Play Again</a>
+      <a class="btn ghost" href="/reset">Reset</a>
     </div>
   </div>
 
-<!-- sounds -->
-<audio id="smash-sound" src="{{ url_for('static', filename='sounds/smash.mp3') }}"></audio>
-<audio id="cut-sound"   src="{{ url_for('static', filename='sounds/cut.mp3') }}"></audio>
-<audio id="wrap-sound"  src="{{ url_for('static', filename='sounds/wrap.mp3') }}"></audio>
+  <!-- Sounds -->
+  <audio id="stone-sound" src="{{ url_for('static', filename='sounds/stone.mp3') }}" preload="auto"></audio>
+  <audio id="paper-sound" src="{{ url_for('static', filename='sounds/paper.mp3') }}" preload="auto"></audio>
+  <audio id="scissor-sound" src="{{ url_for('static', filename='sounds/scissor.mp3') }}" preload="auto"></audio>
+  <audio id="win-sound" src="{{ url_for('static', filename='sounds/win.mp3') }}" preload="auto"></audio>
 
-<script>
-  const c1 = "{{ c1 }}";
-  const c2 = "{{ c2 }}";
-  const winner = "{{ winner }}";
-
-  const elC1 = document.getElementById('res-c1');
-  const elC2 = document.getElementById('res-c2');
-  const banner = document.getElementById('result-banner');
-
-  const smash = document.getElementById('smash-sound');
-  const cut = document.getElementById('cut-sound');
-  const wrap = document.getElementById('wrap-sound');
-
-  // tiny helper to add class and remove after animation
-  function playAnim(el, cls, duration=1200) {
-    el.classList.add(cls);
-    setTimeout(()=> el.classList.remove(cls), duration + 150);
-  }
-
-  // Decide which animation/sound to run
-  // Stone beats Scissors
-  if (c1 === "Stone" && c2 === "Scissors") {
-    playAnim(elC2, 'smash');
-    smash.currentTime = 0; smash.play().catch(()=>{});
-  } else if (c2 === "Stone" && c1 === "Scissors") {
-    playAnim(elC1, 'smash');
-    smash.currentTime = 0; smash.play().catch(()=>{});
-  }
-
-  // Scissors beat Paper
-  if (c1 === "Scissors" && c2 === "Paper") {
-    playAnim(elC2, 'cut');
-    cut.currentTime = 0; cut.play().catch(()=>{});
-  } else if (c2 === "Scissors" && c1 === "Paper") {
-    playAnim(elC1, 'cut');
-    cut.currentTime = 0; cut.play().catch(()=>{});
-  }
-
-  // Paper beats Stone
-  if (c1 === "Paper" && c2 === "Stone") {
-    playAnim(elC2, 'wrap');
-    wrap.currentTime = 0; wrap.play().catch(()=>{});
-  } else if (c2 === "Paper" && c1 === "Stone") {
-    playAnim(elC1, 'wrap');
-    wrap.currentTime = 0; wrap.play().catch(()=>{});
-  }
-
-  // small entrance animation
-  elC1.classList.add('entrance'); elC2.classList.add('entrance');
-  setTimeout(()=> {
-    banner.classList.add('banner-pop');
-  }, 900);
-
-</script>
+<script src="{{ url_for('static', filename='winner.js') }}"></script>
 </body>
 </html>
