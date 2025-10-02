@@ -13,6 +13,12 @@
     <p class="lead">{{ p1 }} chose <strong>{{ p1_choice }}</strong></p>
     <p class="lead">{{ p2 }} chose <strong>{{ p2_choice }}</strong></p>
 
+    <!-- BATTLE ARENA -->
+    <div class="battle-arena">
+      <img id="p1-img" class="battle-img" src="{{ url_for('static', filename='images/' + p1_choice|lower + '.png') }}" alt="{{ p1_choice }}">
+      <img id="p2-img" class="battle-img" src="{{ url_for('static', filename='images/' + p2_choice|lower + '.png') }}" alt="{{ p2_choice }}">
+    </div>
+
     <div class="verdict">
       {% if winner == "Draw" %}
         <h2>It’s a Draw 🤝</h2>
@@ -33,6 +39,11 @@
   <audio id="scissor-sound" src="{{ url_for('static', filename='sounds/scissor.mp3') }}" preload="auto"></audio>
   <audio id="win-sound" src="{{ url_for('static', filename='sounds/win.mp3') }}" preload="auto"></audio>
 
+<script>
+  const p1Choice = "{{ p1_choice }}";
+  const p2Choice = "{{ p2_choice }}";
+  const winner = "{{ winner }}";
+</script>
 <script src="{{ url_for('static', filename='winner.js') }}"></script>
 </body>
 </html>

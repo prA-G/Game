@@ -84,3 +84,28 @@ canvas#confetti-canvas {
   top: 0;
   left: 0;
 }
+
+.battle-arena {
+  margin: 40px auto;
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  align-items: center;
+  position: relative;
+  height: 200px;
+}
+
+.battle-img {
+  width: 120px;
+  height: auto;
+  transition: transform 1s ease, opacity 1s ease;
+}
+
+.battle-img.attack {
+  transform: scale(1.3) rotate(-15deg);
+}
+
+.battle-img.hit {
+  opacity: 0.2;
+  transform: scale(0.5);
+}
