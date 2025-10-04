@@ -9,5 +9,5 @@ services:
     ports:
       - "9000:8000"
     environment:
-      - FLASK_APP=/Game/app.py
+      - FLASK_APP=app
       - FLASK_ENV=development
